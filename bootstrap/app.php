@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies([
-            '10.42.0.1'
+            '10.0.0.0/8'
         ]);
         $middleware->trustHosts([
             'tst.samnewby.dev',
