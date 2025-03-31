@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: { { .Release.Name } }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: { { .Chart.Name } }
+  template:
+    metadata:
+      labels:
+        app: { { .Release.Name } }
+    spec:
+      imagePullSecrets:
+        - name: ghcr-auth-secret
+      initContainers:
+        - name: migrate
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          command: ["php", "artisan", "migrate", "--force"]
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD
+      containers:
+        - name: tst-app
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: { { .Values.app.image.pullPolicy } }
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD

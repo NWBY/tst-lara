@@ -1,0 +1,22 @@
+app:
+  image:
+    repository: "ghcr.io/NWBY/tst-lara"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env:
+    APP_NAME: TST
+    APP_ENV: local
+    APP_DEBUG: true
+    APP_URL: https://tst.samnewby.dev
+    BCRYPT_ROUNDS: 12
+    DB_CONNECTION: pgsql
+    DB_HOST: tst-pgsql
+    DB_PORT: 5432
+    DB_DATABASE: tst
+    DB_USERNAME: tst
+
+pgsql:
+  auth:
+    username: tst
+    database: tst
+    existingSecret: tst-pgsql-auth-secret

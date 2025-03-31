@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate PHP image meta
+        id: php_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}/php
+          tags: |
+            type=sha,format=short
+            type=ref,event=branch
+
+      - name: Build and push PHP
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          file: "./containers/Dockerfile"
+          tags: ${{ steps.php_meta.outputs.tags }}
+          labels: ${{ steps.php_meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

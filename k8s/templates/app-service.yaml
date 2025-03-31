@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  selector:
+    app: {{ .Release.Name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9000        # Exposed port on the service
+      targetPort: 9000  # Port app container listens on
+  type: ClusterIP       # Default type; use NodePort or LoadBalancer if needed
