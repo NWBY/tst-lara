@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies([
             '10.42.0.1'
         ]);
+        $middleware->trustHosts([
+            'tst.samnewby.dev',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
