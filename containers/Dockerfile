@@ -2,7 +2,7 @@ FROM node:20-alpine AS node
 
 WORKDIR /var/www/html
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 RUN npm ci
 
