@@ -12,6 +12,7 @@ Route::get('/', function (Request $request) {
     return response()->json([
         'ip' => $request->ip(),
         'ips' => $request->ips(),
-        'x-forwarded-for' => $request->header('x-forwarded-for'),
+        'headers' => request()->headers->all(),
+        'server' => $_SERVER,
     ]);
 });
