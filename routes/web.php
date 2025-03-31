@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (Request $request) {
+    return response()->json([
+        'ip' => $request->ip(),
+        'x-forwarded-for' => $request->header('x-forwarded-for'),
+    ]);
 });
