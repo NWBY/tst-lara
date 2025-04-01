@@ -36,9 +36,6 @@ return Application::configure(basePath: dirname(__DIR__))
             '2c0f:f248::/32',
             '10.0.0.0/8',
         ]);
-        $middleware->trustHosts([
-            'tst.samnewby.dev',
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
