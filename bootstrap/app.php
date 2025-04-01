@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '2405:8100::/32',
             '2a06:98c0::/29',
             '2c0f:f248::/32',
-            '10.0.0.0/8',
+            //'10.0.0.0/8',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
