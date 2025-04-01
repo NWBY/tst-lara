@@ -14,3 +14,7 @@ Route::get('/ip', function (Request $request) {
         'headers' => request()->headers->all(),
     ]);
 });
+
+Route::get('/server', function (Request $request) {
+    return response()->json($_SERVER);
+});
