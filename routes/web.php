@@ -10,8 +10,9 @@ Route::get('/', function () {
 Route::get('/ip', function (Request $request) {
     return response()->json([
         'ip' => $request->ip(),
+        'fromTrustedProxy' => $request->isFromTrustedProxy(),
         'ips' => $request->ips(),
-        'headers' => request()->headers->all(),
+        'headers' => $request->headers->all(),
     ]);
 });
 
