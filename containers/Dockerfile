@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM serversideup/php:8.4-fpm
+FROM serversideup/php:8.4-fpm-nginx
 
 WORKDIR /var/www/html
 
